@@ -11,8 +11,10 @@ would be used and DIDs would be exchanged using some channel of communication
 """
 
 import asyncio
+from collections import OrderedDict
 import json
 import pprint
+import sys
 
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
@@ -21,6 +23,9 @@ from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION
 
 pool_name = 'hello'
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
+
+# User E-Mail Address
+email = sys.argv[1]
 
 wallet_config = json.dumps({"id": "wallet1"})
 wallet_credentials = json.dumps({"key": "wallet_key"})
@@ -68,8 +73,18 @@ async def write_nym_and_query_verkey():
         client_did, client_verkey = await did.create_and_store_my_did(wallet_handle, "{}")
         print_log('Client DID: ', client_did)
         print_log('Client Verkey: ', client_verkey)
-
         # Step 5 code goes here.
+
+        # Make Json File to docker
+        user_data["email"] = email
+        user_data["did"] = client_did
+        # user_data["date"] = now.YEAR
+
+        print(json.dumps(user_data, ensure_ascii=False, indent="\t"))
+
+        with open('data.json','w',encoding="utf-8") as make_file:
+            json.dump(user_data, make_file, ensure_ascii=False, indent="\t")
+
 
     except IndyError as e:
         print('Error occurred: %s' % e)

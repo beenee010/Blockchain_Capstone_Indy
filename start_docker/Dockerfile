@@ -1,4 +1,4 @@
-FROM indybase
+FROM ubuntu:16.04
 
 ARG uid=1000
 
@@ -52,7 +52,7 @@ ADD generate_did.py /home/indy/generate_did.py
 ADD utils.py /home/indy/utils.py
 # RUN wget -P /home/indy/ https://files.pythonhosted.org/packages/0a/e7/8fad37b523d0d14cc55d22cc8ffb7a381c9384d142f006000fe3295b73bf/python3-indy-1.16.0.tar.gz
 # RUN tar xvzf /home/indy/python3-indy-1.16.0.tar.gz
-ADD python3-indy-1.16.0 /home/indy/python3-indy-1.16.0
+# ADD python3-indy-1.16.0 /home/indy/python3-indy-1.16.0
 # RUN cd python3-indy-1.16.0
 WORKDIR /home/indy/python3-indy-1.16.0
 CMD ["python3","setup.py","install"]
