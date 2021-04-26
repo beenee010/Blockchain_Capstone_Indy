@@ -4,7 +4,7 @@ set -e
 
 email=${1}
 
-indy-cli make_pool.txt
+# indy-cli make_pool.txt
 
 # cd /home/indy/
 
