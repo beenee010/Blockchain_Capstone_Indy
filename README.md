@@ -1,7 +1,7 @@
 # Indy-API
 ```
 cd start_docker
-docker build -t client_docker
+docker build -t client_docker .
 
 docker images # 제대로 이미지가 만들어 졌는지 확인
 
