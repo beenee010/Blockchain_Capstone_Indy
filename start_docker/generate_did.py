@@ -22,15 +22,18 @@ from indy.error import IndyError, ErrorCode
 from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION
 
 pool_name = 'testpool'
+steward_did = 'Th7MpTaRZVRYnPiabds81Y'
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
 
 user_data = OrderedDict()
 
 # User E-Mail Address
 email = sys.argv[1]
+wallet_name = sys.argv[2]
+wallet_key = sys.argv[3]
 
-wallet_config = json.dumps({"id": "wallet1"})
-wallet_credentials = json.dumps({"key": "wallet_key"})
+wallet_config = json.dumps({"id": wallet_name})
+wallet_credentials = json.dumps({"key": wallet_key})
 
 def print_log(value_color="", value_noncolor=""):
     """set the colors for text."""
@@ -77,7 +80,17 @@ async def write_nym_and_query_verkey():
 
         with open('data.json','w',encoding="utf-8") as make_file:
             json.dump(user_data, make_file, ensure_ascii=False, indent="\t")
+        
+        ########################
+        nym_transaction_request = await ledger.build_nym_request(steward_did,client_did,'~7TYfekw4GUagBnBVCqPjiC','','')
+        print_log(nym_transaction_request)
 
+        nym_transaction_response = await ledger.sign_and_submit_request(pool_handle=pool_handle,
+                                                                        wallet_handle=wallet_handle,
+                                                                        submitter_did=steward_did,
+                                                                        request_json=nym_transaction_request)
+        print_log(nym_transaction_response)
+        ########################
         print_log('\n6. End of Process\n')
 
     except IndyError as e:

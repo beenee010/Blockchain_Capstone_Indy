@@ -3,7 +3,7 @@
 set -e
 
 IMAGE_NAME="$1"
-# sudo docker run -tid "$IMAGE_NAME" sh ./init.sh
+sudo docker run -tid "$IMAGE_NAME" sh ./init.sh
 
 CONTAINER_ID=$(sudo docker run -tid "$IMAGE_NAME" /bin/bash)
 docker exec -itu 0 "$CONTAINER_ID" sh /home/indy/init.sh
