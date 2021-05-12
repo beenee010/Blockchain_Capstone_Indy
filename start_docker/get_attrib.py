@@ -62,9 +62,10 @@ async def get_attrib_transaction():
                 #                                                         request_json=get_attrib_request)
                 signed_request = await ledger.sign_request(wallet_handle, user_did, get_attrib_request)
                 response = await ledger.submit_request(pool_handle, signed_request)
-                pprint.pprint(json.loads(response))
+                pprint.pprint(await ledger.get_response_metadata(response))
             except IndyError as ex:
                 if ex.error_code == ErrorCode.LedgerInvalidTransaction:
+                    print_log(ex.error_code)
                     pass
                 else:
                     with open('attrib.json','w',encoding="utf-8") as make_file:
