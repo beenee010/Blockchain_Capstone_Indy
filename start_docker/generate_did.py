@@ -96,7 +96,7 @@ async def write_nym_and_query_verkey():
         pprint.pprint(json.loads(nym_transaction_response))
 
         # Make Json File to docker
-        user_data["email"] = email
+        user_data["email"] = wallet_name
         user_data["did"] = trust_anchor_did
         # user_data["date"] = now.YEAR
         print_log('\n5. Make User EMail, DID Json File\n')
