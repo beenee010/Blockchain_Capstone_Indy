@@ -22,15 +22,13 @@ from indy.error import IndyError, ErrorCode
 from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION
 
 pool_name = 'testpool'
-steward_did = 'Th7MpTaRZVRYnPiabds81Y'
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
 
 user_data = OrderedDict()
 
 # User E-Mail Address
-email = sys.argv[1]
-wallet_name = sys.argv[2]
-wallet_key = sys.argv[3]
+wallet_name = sys.argv[1]
+wallet_key = sys.argv[2]
 
 wallet_config = json.dumps({"id": wallet_name})
 wallet_credentials = json.dumps({"key": wallet_key})
@@ -64,16 +62,42 @@ async def write_nym_and_query_verkey():
         print_log('\n3. Open wallet and get handle from libindy\n')
         wallet_handle = await wallet.open_wallet(wallet_config, wallet_credentials)
 
-        #5.
-        print_log('\n4. Generating and storing DID and verkey representing a Client\n')
-        client_did, client_verkey = await did.create_and_store_my_did(wallet_handle, "{}")
-        print_log('Client DID: ', client_did)
-        print_log('Client Verkey: ', client_verkey)
-        # Step 5 code goes here.
+        # 5. seed로부터 Steward 설정
+        print_log('\n5. Generating and storing steward DID and verkey\n')
+        steward_seed = '000000000000000000000000Steward1'
+        did_json = json.dumps({'seed': steward_seed})
+        steward_did, steward_verkey = await did.create_and_store_my_did(wallet_handle, did_json)
+        print_log('Steward DID: ', steward_did)
+        print_log('Steward Verkey: ', steward_verkey)
+
+        # 6. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
+        print_log('\n6. Generating and storing trust anchor DID and verkey\n')
+        trust_anchor_did, trust_anchor_verkey = await did.create_and_store_my_did(wallet_handle, "{}")
+        print_log('Trust anchor DID: ', trust_anchor_did)
+        print_log('Trust anchor Verkey: ', trust_anchor_verkey)
+
+        # 7. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
+        print_log('\n7. Building NYM request to add Trust Anchor to the ledger\n')
+        nym_transaction_request = await ledger.build_nym_request(submitter_did=steward_did,
+                                                                 target_did=trust_anchor_did,
+                                                                 ver_key=trust_anchor_verkey,
+                                                                 alias=None,
+                                                                 role='TRUST_ANCHOR')
+        print_log('NYM transaction request: ')
+        pprint.pprint(json.loads(nym_transaction_request))
+
+        # 8. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
+        print_log('\n8. Sending NYM request to the ledger\n')
+        nym_transaction_response = await ledger.sign_and_submit_request(pool_handle=pool_handle,
+                                                                        wallet_handle=wallet_handle,
+                                                                        submitter_did=steward_did,
+                                                                        request_json=nym_transaction_request)
+        print_log('NYM transaction response: ')
+        pprint.pprint(json.loads(nym_transaction_response))
 
         # Make Json File to docker
         user_data["email"] = email
-        user_data["did"] = client_did
+        user_data["did"] = trust_anchor_did
         # user_data["date"] = now.YEAR
         print_log('\n5. Make User EMail, DID Json File\n')
         print(json.dumps(user_data, ensure_ascii=False, indent="\t"))
@@ -81,15 +105,6 @@ async def write_nym_and_query_verkey():
         with open('data.json','w',encoding="utf-8") as make_file:
             json.dump(user_data, make_file, ensure_ascii=False, indent="\t")
         
-        ########################
-        nym_transaction_request = await ledger.build_nym_request(steward_did,client_did,'~7TYfekw4GUagBnBVCqPjiC','','')
-        print_log(nym_transaction_request)
-
-        nym_transaction_response = await ledger.sign_and_submit_request(pool_handle=pool_handle,
-                                                                        wallet_handle=wallet_handle,
-                                                                        submitter_did=steward_did,
-                                                                        request_json=nym_transaction_request)
-        print_log(nym_transaction_response)
         ########################
         print_log('\n6. End of Process\n')
 
