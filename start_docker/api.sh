@@ -14,6 +14,6 @@ echo "${wallet_key}"
 docker exec -iu 0 "$name" python3 /home/indy/generate_did.py "${wallet_name}" "${wallet_key}"
 
 echo file copy !!
-sudo docker cp "$name":/home/indy/data.json /home/deploy
+docker cp "$name":/home/indy/data.json /home/deploy
 
 echo "<process end>"
