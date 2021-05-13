@@ -46,6 +46,7 @@ ADD generate_did.py /home/indy/generate_did.py
 ADD utils.py /home/indy/utils.py
 ADD generate_attrib.py /home/indy/generate_attrib.py
 ADD get_attrib.py /home/indy/get_attrib.py
+ADD get_did.py /home/indy/get_did.py
 # WORKDIR /home/indy/python3-indy-1.16.0
 # CMD ["python3","setup.py","install"]
 

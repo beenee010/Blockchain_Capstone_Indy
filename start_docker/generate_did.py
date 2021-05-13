@@ -69,12 +69,15 @@ async def write_nym_and_query_verkey():
         steward_did, steward_verkey = await did.create_and_store_my_did(wallet_handle, did_json)
         print_log('Steward DID: ', steward_did)
         print_log('Steward Verkey: ', steward_verkey)
+        # did에 metadata 설정
+        await did.set_did_metadata(wallet_handle, steward_did, "Steward")
 
         # 6. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
         print_log('\n6. Generating and storing trust anchor DID and verkey\n')
         trust_anchor_did, trust_anchor_verkey = await did.create_and_store_my_did(wallet_handle, "{}")
         print_log('Trust anchor DID: ', trust_anchor_did)
         print_log('Trust anchor Verkey: ', trust_anchor_verkey)
+        await did.set_did_metadata(wallet_handle, trust_anchor_did, "StudentID")
 
         # 7. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
         print_log('\n7. Building NYM request to add Trust Anchor to the ledger\n')

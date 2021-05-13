@@ -1,2 +1,3 @@
 pool create testpool gen_txn_file=/home/indy/genesis
 pool connect testpool
+exit
