@@ -7,7 +7,8 @@ import re
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
 
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
+from collections import OrderedDict
 
 pool_name = 'test_pool'
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
@@ -18,14 +19,8 @@ wallet_key = sys.argv[2]
 wallet_config = json.dumps({"id": wallet_name})
 wallet_credentials = json.dumps({"key": wallet_key})
 
-def print_log(value_color="", value_noncolor=""):
-    """set the colors for text."""
-    HEADER = '\033[92m'
-    ENDC = '\033[0m'
-    print(HEADER + value_color + ENDC + str(value_noncolor))
 
-
-async def write_nym_and_query_verkey():
+async def get_did():
     try:
         await pool.set_protocol_version(PROTOCOL_VERSION)
 
@@ -35,6 +30,7 @@ async def write_nym_and_query_verkey():
         try:
             await pool.create_pool_ledger_config(config_name=pool_name, config=pool_config)
         except IndyError as ex:
+            add_error("student_did.json")
             if ex.error_code == ErrorCode.PoolLedgerConfigAlreadyExistsError:
                 pass
         
@@ -63,22 +59,27 @@ async def write_nym_and_query_verkey():
                 with open('student_did.json','w',encoding="utf-8") as make_file:
                     # make_file.write(student_DID)
                     jsonObject['verkey'] = "None"
+                    jsonObject['error'] = "None"
                     json.dump(jsonObject, make_file, ensure_ascii=False, indent="\t")
                 break
+            else:
+                add_error("student_did.json")
         
         
             
     except IndyError as e:
+        add_error("student_did.json")
         print('Error occurred: %s' % e)
 
 
 def main():
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(write_nym_and_query_verkey())
+    loop.run_until_complete(get_did())
     loop.close()
 
 
 if __name__ == '__main__':
     main()
+
 
 

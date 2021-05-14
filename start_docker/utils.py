@@ -1,6 +1,8 @@
 from os import environ
+import json
 from pathlib import Path
 from tempfile import gettempdir
+from collections import OrderedDict
 
 PROTOCOL_VERSION = 2
 
@@ -26,3 +28,15 @@ def save_pool_genesis_txn_file(path):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(str(path), "w+") as f:
         f.writelines(data)
+
+def print_log(value_color="", value_noncolor=""):
+    """set the colors for text."""
+    HEADER = '\033[92m'
+    ENDC = '\033[0m'
+    print(HEADER + value_color + ENDC + str(value_noncolor))
+
+def add_error(file_name):
+    error_json = OrderedDict()
+    error_json["error"] = "Error"
+    with open(file_name,'w',encoding="utf-8") as error_file:
+        json.dump(error_json, error_file, ensure_ascii=False, indent="\t")

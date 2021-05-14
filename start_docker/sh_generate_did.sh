@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+# set -e
 
 name="$1"
 wallet_name="$2"

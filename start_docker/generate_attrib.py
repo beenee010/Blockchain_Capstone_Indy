@@ -7,7 +7,7 @@ import sys
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
 
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
 
 pool_name = 'testpool'
 steward_did = 'Th7MpTaRZVRYnPiabds81Y'
@@ -30,12 +30,6 @@ att_day = sys.argv[8]
 wallet_config = json.dumps({"id": wallet_name})
 wallet_credentials = json.dumps({"key": wallet_key})
 
-def print_log(value_color="", value_noncolor=""):
-    """set the colors for text."""
-    HEADER = '\033[92m'
-    ENDC = '\033[0m'
-    print(HEADER + value_color + ENDC + str(value_noncolor))
-
 
 async def write_nym_and_query_verkey():
     try:
@@ -52,6 +46,7 @@ async def write_nym_and_query_verkey():
         try:
             await wallet.create_wallet(wallet_config, wallet_credentials)
         except IndyError as ex:
+            add_error("attrib.json")
             if ex.error_code == ErrorCode.WalletAlreadyExistsError:
                 pass
 
@@ -85,6 +80,7 @@ async def write_nym_and_query_verkey():
         print_log('\n6. End of Process\n')
 
     except IndyError as e:
+        add_error("attrib.json")
         print('Error occurred: %s' %e)
 
 
