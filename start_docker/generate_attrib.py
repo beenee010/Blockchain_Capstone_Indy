@@ -25,6 +25,7 @@ att_building = sys.argv[5]
 att_year = sys.argv[6]
 att_month = sys.argv[7]
 att_day = sys.argv[8]
+att_date = att_year+att_month+att_day
 
 
 wallet_config = json.dumps({"id": wallet_name})
@@ -61,7 +62,9 @@ async def write_nym_and_query_verkey():
         
         # 6.
         print_log('\n5. Generate Attrib Transaction\n')
-        attrib_transaction_request = await ledger.build_attrib_request(user_did, user_did,None, '{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '":{"name":"' + user_did + '"}}', None)
+        attrib_transaction_request = await ledger.build_attrib_request(user_did, user_did,None, 
+        '{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '":{"name":"' + user_did + '"}, {"building":"' + att_building
+         + '"}, {"date": "' + att_date + '"}}', None)
         # # user_data["date"] = now.YEAR
         # print_log('\n5. Make User EMail, DID Json File\n')
         # print(json.dumps(user_data, ensure_ascii=False, indent="\t"))
