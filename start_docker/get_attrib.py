@@ -7,7 +7,7 @@ import sys
 import logging
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
 
 wallet_name = sys.argv[1]
 wallet_key = sys.argv[2]
@@ -23,12 +23,6 @@ genesis_file_path = get_pool_genesis_txn_path(pool_name)
 
 wallet_config = json.dumps({"id": wallet_name})
 wallet_credentials = json.dumps({"key": wallet_key})
-
-def print_log(value_color="", value_noncolor=""):
-    """set the colors for text."""
-    HEADER = '\033[92m'
-    ENDC = '\033[0m'
-    print(HEADER + value_color + ENDC + str(value_noncolor))
 
 async def get_attrib_transaction():
     try:
@@ -50,7 +44,9 @@ async def get_attrib_transaction():
         # print_log('DID_Result ', did_result)
 
         # 4.
-        print_log('\n4. Get Attrib Transaction in Month & Make "attrib.json" File\n') 
+        print_log('\n4. Get Attrib Transaction in Month & Make "attrib.json" File\n')
+        count = 0
+
         with open('attrib.json','w',encoding="utf-8") as make_file:
             for building in range(1, 10):
                 for i in range(1, int(att_day) + 1):
@@ -63,10 +59,13 @@ async def get_attrib_transaction():
                         get_attrib_response = json.loads(await ledger.submit_request(pool_handle, get_attrib_request))
 
                         if get_attrib_response['result']['data'] is not None:
+                            count = count + 1
                             # print_log(raw)
                             print_log("Success")
-                            print_log(get_attrib_response['result']['data'])                     
-                            json.dump(json.loads(get_attrib_response['result']['data']), make_file, ensure_ascii=False, indent="\t")
+                            response = json.loads(get_attrib_response['result']['data'])
+                            print_log(response)                     
+                            response['error'] = "None"
+                            json.dump(response, make_file, ensure_ascii=False, indent="\t")
                             make_file.write(",\n")
                         else:
                             # print_log(raw)
@@ -79,6 +78,8 @@ async def get_attrib_transaction():
                         else:
                             with open('attrib.json','w',encoding="utf-8") as make_file:
                                 json.dump(json.loads(response), make_file, ensure_ascii=False, indent="\t")
+            if count == 0:
+                add_error('attrib.json')
             # temp = make_file.read()
             # make_file.write()
 
