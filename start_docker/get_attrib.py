@@ -93,9 +93,8 @@ async def get_attrib_transaction():
             # json.dump(json.loads(json_data), make_file, ensure_ascii=False,indent="\t")
             print_log("Count: " + str(count))
             if count == 0:
-                json_data = json.loads(json_data)
-                json_data['error'] = "Error"
-                json.dump(json_data, make_file, ensure_ascii=False,indent="\t")
+                data['error'] = "Error"
+                json.dump(data, make_file, ensure_ascii=False,indent="\t")
             else:
                 json.dump(data, make_file, ensure_ascii=False,indent="\t")
 
