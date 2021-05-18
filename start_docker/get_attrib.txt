@@ -1,2 +1,0 @@
-pool connect testpool
-ledger get_attrib

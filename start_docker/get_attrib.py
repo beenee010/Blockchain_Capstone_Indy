@@ -39,8 +39,8 @@ async def get_attrib_transaction():
         wallet_handle = await wallet.open_wallet(wallet_config, wallet_credentials)
 
         # 3.
-        print_log('\n3. Get DID and Verkey From wallet\n')
-        did_result = await did.get_my_did_with_meta(wallet_handle, user_did)
+        # print_log('\n3. Get DID and Verkey From wallet\n')
+        # did_result = await did.get_my_did_with_meta(wallet_handle, user_did)
         # print_log('DID_Result ', did_result)
 
         # 4.
@@ -48,7 +48,15 @@ async def get_attrib_transaction():
         count = 0
 
         with open('attrib.json','w',encoding="utf-8") as make_file:
+            data = {}
+            data['error'] = "None"
+            data['did'] = user_did
+            data['transaction'] = []
+            # json_data = json.dumps(data, ensure_ascii=False, indent="\t")
+            # print_log(json_data)
+            # json_data = json.loads(json_data)
             for building in range(1, 10):
+                
                 for i in range(1, int(att_day) + 1):
                     if i < 10:
                         raw = user_did + '_' + str(building) + '_' + att_year + att_month + "0" + str(i)
@@ -59,14 +67,17 @@ async def get_attrib_transaction():
                         get_attrib_response = json.loads(await ledger.submit_request(pool_handle, get_attrib_request))
 
                         if get_attrib_response['result']['data'] is not None:
+                            # json_data = json.loads(json_data)
                             count = count + 1
-                            # print_log(raw)
+                            
                             print_log("Success")
                             response = json.loads(get_attrib_response['result']['data'])
-                            print_log(response)                     
-                            response['error'] = "None"
-                            json.dump(response, make_file, ensure_ascii=False, indent="\t")
-                            make_file.write(",\n")
+                            # res = json.dumps(response, ensure_ascii=False, indent="\t")
+                            # json_data = json_data.copy()
+                            # json_data.update(response)
+                            data["transaction"].append(response[raw])
+                            # json_data = json.dumps(json_data,ensure_ascii=False, indent="\t")
+
                         else:
                             # print_log(raw)
                             pass
@@ -78,10 +89,15 @@ async def get_attrib_transaction():
                         else:
                             with open('attrib.json','w',encoding="utf-8") as make_file:
                                 json.dump(json.loads(response), make_file, ensure_ascii=False, indent="\t")
+            # print_log(json_data)
+            # json.dump(json.loads(json_data), make_file, ensure_ascii=False,indent="\t")
+            print_log("Count: " + str(count))
             if count == 0:
-                add_error('attrib.json')
-            # temp = make_file.read()
-            # make_file.write()
+                json_data = json.loads(json_data)
+                json_data['error'] = "Error"
+                json.dump(json_data, make_file, ensure_ascii=False,indent="\t")
+            else:
+                json.dump(data, make_file, ensure_ascii=False,indent="\t")
 
         print_log('\n[End of Process]\n')
 
