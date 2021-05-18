@@ -87,6 +87,7 @@ async def get_attrib_transaction():
 
     except IndyError as e:
         print('Error occurred: %s' %e)
+        add_error('attrib.json')
 
 
 def main():
