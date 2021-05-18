@@ -19,7 +19,6 @@ att_month = sys.argv[5]
 att_day = sys.argv[6]
 
 pool_name = 'testpool'
-steward_did = 'Th7MpTaRZVRYnPiabds81Y'
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
 
 wallet_config = json.dumps({"id": wallet_name})
@@ -37,20 +36,21 @@ async def get_attrib_transaction():
 
         print_log('genesis_txn: ', genesis_file_path)
 
-        # 2.
+        # 1.
         print_log('\n1. Open pool ledger and get handle from libindy\n')
         pool_handle = await pool.open_pool_ledger(config_name=pool_name, config=None)
 
-        # 4.
-        print_log('\n3. Open wallet and get handle from libindy\n')
+        # 2.
+        print_log('\n2. Open wallet and get handle from libindy\n')
         wallet_handle = await wallet.open_wallet(wallet_config, wallet_credentials)
 
-        #5.
-        print_log('\n4. Get DID and Verkey From wallet\n')
+        # 3.
+        print_log('\n3. Get DID and Verkey From wallet\n')
         did_result = await did.get_my_did_with_meta(wallet_handle, user_did)
-        print_log('DID_Result ', did_result)
+        # print_log('DID_Result ', did_result)
 
-        # 6. 
+        # 4.
+        print_log('\n4. Get Attrib Transaction in Month & Make "attrib.json" File\n') 
         with open('attrib.json','w',encoding="utf-8") as make_file:
             for building in range(1, 10):
                 for i in range(1, int(att_day) + 1):
@@ -82,7 +82,7 @@ async def get_attrib_transaction():
             # temp = make_file.read()
             # make_file.write()
 
-        print_log('\n6. End of Process\n')
+        print_log('\n[End of Process]\n')
 
     except IndyError as e:
         print('Error occurred: %s' %e)

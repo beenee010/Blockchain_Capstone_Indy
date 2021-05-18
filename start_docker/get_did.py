@@ -34,16 +34,17 @@ async def get_did():
             if ex.error_code == ErrorCode.PoolLedgerConfigAlreadyExistsError:
                 pass
         
-        print_log('\nOpen pool ledger and get handle from libindy\n')
+        print_log('\n2. Open pool ledger and get handle from libindy\n')
         pool_handle = await pool.open_pool_ledger(config_name=pool_name, config=None)
                 
-        print_log('\nOpen wallet and get handle from libindy\n')
+        print_log('\n3. Open wallet and get handle from libindy\n')
         wallet_handle = await wallet.open_wallet(wallet_config, wallet_credentials)
 
-        print_log('\nList my DID\n')
+        print_log('\n4. List my DID\n')
         my_did = await did.list_my_dids_with_meta(wallet_handle)
         list_did = my_did.split("},{")
 
+        print_log('\n5. Parse DID and Make "student_did.json" File\n')
         for i in list_did:
             print(i + "\n\n")
             if "StudentID" in i:
@@ -64,6 +65,8 @@ async def get_did():
                 break
             else:
                 add_error("student_did.json")
+        
+        print_log('\n[End of Process]\n')
         
         
             

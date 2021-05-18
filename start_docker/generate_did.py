@@ -58,7 +58,7 @@ async def create_did_and_write_nym():
         wallet_handle = await wallet.open_wallet(wallet_config, wallet_credentials)
 
         # 5. seed로부터 Steward 설정
-        print_log('\n5. Generating and storing steward DID and verkey\n')
+        print_log('\n4. Generating and storing steward DID and verkey\n')
         steward_seed = '000000000000000000000000Steward1'
         did_json = json.dumps({'seed': steward_seed})
         steward_did, steward_verkey = await did.create_and_store_my_did(wallet_handle, did_json)
@@ -68,14 +68,14 @@ async def create_did_and_write_nym():
         await did.set_did_metadata(wallet_handle, steward_did, "Steward")
 
         # 6. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
-        print_log('\n6. Generating and storing trust anchor DID and verkey\n')
+        print_log('\n5. Generating and storing trust anchor DID and verkey\n')
         trust_anchor_did, trust_anchor_verkey = await did.create_and_store_my_did(wallet_handle, "{}")
         print_log('Trust anchor DID: ', trust_anchor_did)
         print_log('Trust anchor Verkey: ', trust_anchor_verkey)
         await did.set_did_metadata(wallet_handle, trust_anchor_did, "StudentID")
 
         # 7. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
-        print_log('\n7. Building NYM request to add Trust Anchor to the ledger\n')
+        print_log('\n6. Building NYM request to add Trust Anchor to the ledger\n')
         nym_transaction_request = await ledger.build_nym_request(submitter_did=steward_did,
                                                                  target_did=trust_anchor_did,
                                                                  ver_key=trust_anchor_verkey,
@@ -85,7 +85,7 @@ async def create_did_and_write_nym():
         pprint.pprint(json.loads(nym_transaction_request))
 
         # 8. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
-        print_log('\n8. Sending NYM request to the ledger\n')
+        print_log('\n7. Sending NYM request to the ledger\n')
         nym_transaction_response = await ledger.sign_and_submit_request(pool_handle=pool_handle,
                                                                         wallet_handle=wallet_handle,
                                                                         submitter_did=steward_did,
@@ -96,16 +96,16 @@ async def create_did_and_write_nym():
         # Make Json File to docker
         user_data["email"] = wallet_name
         user_data["did"] = trust_anchor_did
-        # user_data["date"] = now.YEAR
-        print_log('\n5. Make User EMail, DID Json File\n')
+        
+        print_log('\n8. Make User EMail, DID Json File\n')
         print(json.dumps(user_data, ensure_ascii=False, indent="\t"))
 
         with open('data.json','w',encoding="utf-8") as make_file:
             user_data['error'] = "None"
             json.dump(user_data, make_file, ensure_ascii=False, indent="\t")
         
-        ########################
-        print_log('\n6. End of Process\n')
+        
+        print_log('\n[End of Process]\n')
 
     except IndyError as e:
         add_error("data.json")

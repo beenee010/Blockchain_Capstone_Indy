@@ -42,11 +42,15 @@ ADD genesis /home/indy/genesis
 ADD make_pool.txt /home/indy/make_pool.txt
 ADD test.sh /home/indy/start.sh
 ADD init.sh /home/indy/init.sh
-ADD generate_did.py /home/indy/generate_did.py
+
 ADD utils.py /home/indy/utils.py
+
+ADD generate_did.py /home/indy/generate_did.py
+ADD get_did.py /home/indy/get_did.py
+
 ADD generate_attrib.py /home/indy/generate_attrib.py
 ADD get_attrib.py /home/indy/get_attrib.py
-ADD get_did.py /home/indy/get_did.py
+
 # WORKDIR /home/indy/python3-indy-1.16.0
 # CMD ["python3","setup.py","install"]
 
