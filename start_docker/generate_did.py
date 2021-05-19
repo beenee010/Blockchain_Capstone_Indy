@@ -30,6 +30,9 @@ user_data = OrderedDict()
 wallet_name = sys.argv[1]
 wallet_key = sys.argv[2]
 
+# User DID's Seed
+student_seed = sys.argv[3]
+
 wallet_config = json.dumps({"id": wallet_name})
 wallet_credentials = json.dumps({"key": wallet_key})
 
@@ -69,7 +72,9 @@ async def create_did_and_write_nym():
 
         # 6. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
         print_log('\n5. Generating and storing trust anchor DID and verkey\n')
-        trust_anchor_did, trust_anchor_verkey = await did.create_and_store_my_did(wallet_handle, "{}")
+        did_seed = "0000000000000000STUDENT" + student_seed
+        did_seed_json = json.dumps({'seed':did_seed})
+        trust_anchor_did, trust_anchor_verkey = await did.create_and_store_my_did(wallet_handle, did_seed_json)
         print_log('Trust anchor DID: ', trust_anchor_did)
         print_log('Trust anchor Verkey: ', trust_anchor_verkey)
         await did.set_did_metadata(wallet_handle, trust_anchor_did, "StudentID")
