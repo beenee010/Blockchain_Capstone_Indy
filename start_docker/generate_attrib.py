@@ -3,6 +3,7 @@ from collections import OrderedDict
 import json
 import pprint
 import sys
+import datetime
 
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
@@ -25,7 +26,7 @@ att_year = sys.argv[5]
 att_month = sys.argv[6]
 att_day = sys.argv[7]
 
-att_date = att_year+att_month+att_day
+att_date = att_year+"-"+att_month+"-"+att_day
 
 
 wallet_config = json.dumps({"id": wallet_name})
@@ -53,10 +54,14 @@ async def generate_attrib_transaction():
         
         # 6.
         print_log('\n4. Generate Attrib Transaction\n')
-        # print_log('{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '":{"name":"' + user_did + '"}, {"building":"' + att_building
-        #  + '"}, {"date": "' + att_date + '"}}')
+
+        time = datetime.datetime.now().time()
+        dateformat = "%H:%M"
+        time = time.strftime(dateformat)
+
         attrib_transaction_request = await ledger.build_attrib_request(user_did, user_did,None, 
-        '{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '":{"name":"' + user_did + '", "building":"' + att_building
+        '{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '":{"time": "' + time +
+         '", "name":"' + user_did + '", "building":"' + att_building
          + '", "date": "' + att_date + '"}}', None)
 
         attrib_transaction_response = await ledger.sign_and_submit_request(pool_handle=pool_handle,

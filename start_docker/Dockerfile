@@ -36,6 +36,8 @@ RUN apt-get install -y libvcx
 RUN apt-get install -y indy-cli
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
+RUN pip install pytz
+RUN ln -sf /usr/local/lib/python3.6/dist-packages/pytz/zoneinfo/Asia/Seoul /etc/localtime
 RUN pip install --upgrade python3-indy
 
 ADD genesis /home/indy/genesis
