@@ -55,7 +55,11 @@ async def get_attrib_transaction():
             # json_data = json.dumps(data, ensure_ascii=False, indent="\t")
             # print_log(json_data)
             # json_data = json.loads(json_data)
+
             last_day = 30
+            if att_month % 2 == 1 or att_month == 8:
+                last_day = 31
+
             for building in range(1, 10):                
                 # for i in range(1, int(att_day) + 1):
                 for i in range(1, last_day+1):
