@@ -73,7 +73,7 @@ async def generate_attrib_transaction():
         print_log('\n[End of Process]\n')
 
     except IndyError as e:
-        add_error("attrib.json")
+        add_error("gen_attrib.json")
         print('Error occurred: %s' %e)
 
 
