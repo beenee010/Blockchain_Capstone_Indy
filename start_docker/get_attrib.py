@@ -55,9 +55,10 @@ async def get_attrib_transaction():
             # json_data = json.dumps(data, ensure_ascii=False, indent="\t")
             # print_log(json_data)
             # json_data = json.loads(json_data)
-            for building in range(1, 10):
-                
-                for i in range(1, int(att_day) + 1):
+            last_day = 30
+            for building in range(1, 10):                
+                # for i in range(1, int(att_day) + 1):
+                for i in range(1, last_day+1):
                     if i < 10:
                         raw = user_did + '_' + str(building) + '_' + att_year + att_month + "0" + str(i)
                     else:
