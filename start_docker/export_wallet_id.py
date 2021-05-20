@@ -24,4 +24,5 @@ print('\nMake User EMail, New Wallet ID Json File\n')
 print(json.dumps(user_data, ensure_ascii=False, indent="\t"))
 
 with open(student_id+'NewWalletID.json','w',encoding="utf-8") as make_file:
+    user_data['error'] = "None"
     json.dump(user_data, make_file, ensure_ascii=False, indent="\t")
