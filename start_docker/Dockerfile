@@ -52,6 +52,11 @@ ADD get_did.py /home/indy/get_did.py
 
 ADD generate_attrib.py /home/indy/generate_attrib.py
 ADD get_attrib.py /home/indy/get_attrib.py
+ADD export_did.py /home/indy/export_did.py
+ADD export_wallet_id.py /home/indy/export_wallet_id.py
+ADD recreate_wallet.py /home/indy/recreate_wallet.py
+ADD set_metadata.py /home/indy/set_metadata.py
+
 
 # WORKDIR /home/indy/python3-indy-1.16.0
 # CMD ["python3","setup.py","install"]
