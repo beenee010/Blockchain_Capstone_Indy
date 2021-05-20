@@ -25,7 +25,7 @@ result['dids'].append(_did)
 
 ('\n5. Export DID \n')
 
-with open(student_seed+'_did.json','w',encoding="utf-8") as make_file:
+with open(student_seed+'did.json','w',encoding="utf-8") as make_file:
     json.dump(result, make_file, ensure_ascii=False, indent="\t")
 
     print('\nExport DID Success!! \n')
