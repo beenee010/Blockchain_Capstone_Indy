@@ -31,3 +31,8 @@ docker exec -iu 0 "${name}" python3 /home/indy/set_metadata.py "${wallet_name}" 
 docker exec -iu 0 "${name}" python3 /home/indy/export_wallet_id.py "${email}" "${wallet_name}" "${seed}"
 
 rm new_wallet_command.txt
+
+docker cp "$name":/home/indy/"${seed}"NewWalletID.json /home/deploy
+echo file copy !!
+
+echo "<process end>"
