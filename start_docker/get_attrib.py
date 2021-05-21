@@ -9,10 +9,11 @@ from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
 from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
 
-user_did = sys.argv[1]
+admin_did = sys.argv[1]
+user_did = sys.argv[2]
 
-att_year = sys.argv[2]
-att_month = sys.argv[3]
+att_year = sys.argv[3]
+att_month = sys.argv[4]
 
 pool_name = 'testpool'
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
@@ -34,7 +35,7 @@ async def get_attrib_transaction():
         with open('attrib.json','w',encoding="utf-8") as make_file:
             data = {}
             data['error'] = "None"
-            data['did'] = user_did
+            data['did'] = admin_did
             data['transaction'] = []
             # json_data = json.dumps(data, ensure_ascii=False, indent="\t")
             # print_log(json_data)
@@ -52,7 +53,7 @@ async def get_attrib_transaction():
                     else:
                         raw = user_did + '_' + str(building) + '_' + att_year + att_month + str(i)
                     try:
-                        get_attrib_request = await ledger.build_get_attrib_request(user_did,user_did,raw, None, None)
+                        get_attrib_request = await ledger.build_get_attrib_request(admin_did,admin_did,raw, None, None)
                         get_attrib_response = json.loads(await ledger.submit_request(pool_handle, get_attrib_request))
 
                         if get_attrib_response['result']['data'] is not None:
