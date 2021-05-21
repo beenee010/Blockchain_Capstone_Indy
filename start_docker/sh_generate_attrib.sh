@@ -25,6 +25,6 @@ docker cp "$name":/home/indy/gen_attrib.json /home/deploy
 # docker cp "$name":/home/indy/gen_attrib.json ./
 docker exec -iu 0 "$name" rm gen_attrib.json
 
-echo [Log File Copy}
+echo "[Log File Copy]"
 
 echo "<< Process End >>"

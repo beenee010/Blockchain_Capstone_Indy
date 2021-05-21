@@ -60,6 +60,14 @@ async def generate_attrib_transaction():
         dateformat = "%H:%M"
         time = time.strftime(dateformat)
 
+        # raw = '{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '"'
+
+        # entry = json.dumps('{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '":{"time": "' + time +
+        #  '", "name":"' + user_did + '", "building":"' + att_building
+        #  + '", "date": "' + att_date + '"}}')
+
+        # print_log(entry)
+
         attrib_transaction_request = await ledger.build_attrib_request(admin_did, admin_did,None, 
         '{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '":{"time": "' + time +
          '", "name":"' + user_did + '", "building":"' + att_building
@@ -70,7 +78,16 @@ async def generate_attrib_transaction():
                                                                         submitter_did=admin_did,
                                                                         request_json=attrib_transaction_request)
         print_log(attrib_transaction_response)
-        
+
+        json_data = {}
+        json_data['error'] = "None"
+        json_data['entry_date'] = att_date
+        json_data['building_num'] = att_building
+        json_data['entry_did'] = user_did
+
+        with open('gen_attrib.json','w',encoding="utf-8") as make_file:
+            json.dump(json_data, make_file, ensure_ascii=False,indent="\t")
+
         print_log('\n[End of Process]\n')
 
     except IndyError as e:
