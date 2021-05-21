@@ -15,5 +15,4 @@ docker exec -iu 0 "$name" python3 /home/indy/get_did.py "${wallet_name}" "${wall
 
 echo file copy !!
 docker cp "$name":/home/indy/student_did.json /home/deploy
-
 echo "<process end>"

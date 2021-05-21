@@ -57,7 +57,7 @@ async def get_attrib_transaction():
             # json_data = json.loads(json_data)
 
             last_day = 30
-            if att_month % 2 == 1 or att_month == 8:
+            if int(att_month) % 2 == 1 or int(att_month) == 8:
                 last_day = 31
 
             for building in range(1, 10):                
