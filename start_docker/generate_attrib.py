@@ -19,12 +19,13 @@ user_data = OrderedDict()
 # User E-Mail Address
 wallet_name = sys.argv[1]
 wallet_key = sys.argv[2]
-user_did = sys.argv[3]
+admin_did = sys.argv[3]
+user_did = sys.argv[4]
 
-att_building = sys.argv[4]
-att_year = sys.argv[5]
-att_month = sys.argv[6]
-att_day = sys.argv[7]
+att_building = sys.argv[5]
+att_year = sys.argv[6]
+att_month = sys.argv[7]
+att_day = sys.argv[8]
 
 att_date = att_year+"-"+att_month+"-"+att_day
 
@@ -49,7 +50,7 @@ async def generate_attrib_transaction():
 
         #5.
         print_log('\n3. Get DID and Verkey From wallet\n')
-        did_result = await did.get_my_did_with_meta(wallet_handle, user_did)
+        did_result = await did.get_my_did_with_meta(wallet_handle, admin_did)
         # print_log('DID_Result ', did_result)
         
         # 6.
@@ -59,14 +60,14 @@ async def generate_attrib_transaction():
         dateformat = "%H:%M"
         time = time.strftime(dateformat)
 
-        attrib_transaction_request = await ledger.build_attrib_request(user_did, user_did,None, 
+        attrib_transaction_request = await ledger.build_attrib_request(admin_did, admin_did,None, 
         '{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '":{"time": "' + time +
          '", "name":"' + user_did + '", "building":"' + att_building
          + '", "date": "' + att_date + '"}}', None)
 
         attrib_transaction_response = await ledger.sign_and_submit_request(pool_handle=pool_handle,
                                                                         wallet_handle=wallet_handle,
-                                                                        submitter_did=user_did,
+                                                                        submitter_did=admin_did,
                                                                         request_json=attrib_transaction_request)
         print_log(attrib_transaction_response)
         
