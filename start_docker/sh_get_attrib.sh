@@ -4,14 +4,15 @@
 
 # name: docker container name
 name="$1"
-did="$2"
+admin_did="$2"
+user_did="$3"
 
-year="$3"
-month="$4"
+year="$4"
+month="$5"
 
 echo "[open wallet]"
 
-docker exec -iu 0 "$name" python3 /home/indy/get_attrib.py "${did}" "${year}" "${month}"
+docker exec -iu 0 "$name" python3 /home/indy/get_attrib.py "${admin_did}" "${user_did}" "${year}" "${month}"
 
 docker cp "$name":/home/indy/attrib.json /home/deploy
 
