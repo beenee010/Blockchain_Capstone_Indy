@@ -4,18 +4,12 @@
 
 # name: docker container name
 name="$1"
-wallet_name="$2"
-wallet_key="$3"
-did="$4"
+did="$2"
 
-year="$5"
-month="$6"
-day="$7"
+year="$3"
+month="$4"
 
 echo "[open wallet]"
-
-echo "\twallet_name: ${wallet_name}"
-echo "\twallet_key: ${wallet_key}"
 
 docker exec -iu 0 "$name" python3 /home/indy/get_attrib.py "${did}" "${year}" "${month}"
 
