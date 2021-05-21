@@ -9,20 +9,13 @@ from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
 from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
 
-wallet_name = sys.argv[1]
-wallet_key = sys.argv[2]
-user_did = sys.argv[3]
+user_did = sys.argv[1]
 
-# att_building = sys.argv[4]
-att_year = sys.argv[4]
-att_month = sys.argv[5]
-att_day = sys.argv[6]
+att_year = sys.argv[2]
+att_month = sys.argv[3]
 
 pool_name = 'testpool'
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
-
-wallet_config = json.dumps({"id": wallet_name})
-wallet_credentials = json.dumps({"key": wallet_key})
 
 async def get_attrib_transaction():
     try:
@@ -33,15 +26,6 @@ async def get_attrib_transaction():
         # 1.
         print_log('\n1. Open pool ledger and get handle from libindy\n')
         pool_handle = await pool.open_pool_ledger(config_name=pool_name, config=None)
-
-        # 2.
-        print_log('\n2. Open wallet and get handle from libindy\n')
-        wallet_handle = await wallet.open_wallet(wallet_config, wallet_credentials)
-
-        # 3.
-        # print_log('\n3. Get DID and Verkey From wallet\n')
-        # did_result = await did.get_my_did_with_meta(wallet_handle, user_did)
-        # print_log('DID_Result ', did_result)
 
         # 4.
         print_log('\n4. Get Attrib Transaction in Month & Make "attrib.json" File\n')

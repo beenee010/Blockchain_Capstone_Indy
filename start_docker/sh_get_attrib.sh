@@ -17,7 +17,7 @@ echo "[open wallet]"
 echo "\twallet_name: ${wallet_name}"
 echo "\twallet_key: ${wallet_key}"
 
-docker exec -iu 0 "$name" python3 /home/indy/get_attrib.py "${wallet_name}" "${wallet_key}" "${did}" "${year}" "${month}" "${day}"
+docker exec -iu 0 "$name" python3 /home/indy/get_attrib.py "${did}" "${year}" "${month}"
 
 docker cp "$name":/home/indy/attrib.json /home/deploy
 
