@@ -84,6 +84,7 @@ async def generate_attrib_transaction():
         json_data['entry_date'] = att_date
         json_data['building_num'] = att_building
         json_data['entry_did'] = user_did
+        json_data['entry_time'] = time
 
         with open('gen_attrib.json','w',encoding="utf-8") as make_file:
             json.dump(json_data, make_file, ensure_ascii=False,indent="\t")
