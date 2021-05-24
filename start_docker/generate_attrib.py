@@ -20,7 +20,11 @@ user_data = OrderedDict()
 # Params
 wallet_name = sys.argv[1]
 wallet_key = sys.argv[2]
+
+# DID of Building manager
 admin_did = sys.argv[3]
+
+# DID of visitant
 user_did = sys.argv[4]
 
 att_building = sys.argv[5]
