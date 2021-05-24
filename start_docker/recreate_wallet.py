@@ -47,7 +47,8 @@ async def create_did_and_write_nym():
         my_did = await did.list_my_dids_with_meta(wallet_handle)
         list_did = my_did.split("},{")
 
-        print_log('\nParse DID \n')
+        #4.
+        print_log('\n4. Parse DID \n')
         for i in list_did:
             if "StudentID" in i:
                 i = re.sub("\[|\'|\]","", i)
@@ -59,9 +60,9 @@ async def create_did_and_write_nym():
                 student_DID = jsonObject.get("did")
                 print_log("Student DID: " + student_DID)
 
-        #######################
-        # 4.
-        print_log('\n4. Parse DID \n')
+        
+        # 5.
+        print_log('\n5. Set metadata \n')
         did_seed = "0000000000000000STUDENT" + student_seed
         result = {}
         result['version'] = 1
@@ -69,28 +70,27 @@ async def create_did_and_write_nym():
         _did = {}
         _did['did'] = student_DID
         _did['seed'] = did_seed
-        # _did['metadata'] = "StudentID"
 
         result['dids'].append(_did)
 
-        # print_log(a)
         print_log('\n5. Export DID \n')
 
+        # Export json of DID file
         with open('did.json','w',encoding="utf-8") as make_file:
             json.dump(result, make_file, ensure_ascii=False, indent="\t")
 
         print_log('\nExport DID Success!! \n')
-        #######################
 
-        # 13.
+        # 6.
         print_log('\n6. Closing wallet and pool\n')
         await wallet.close_wallet(wallet_handle)
         await pool.close_pool_ledger(pool_handle)
 
-        # 14.
+        # 7.
         print_log('\n7. Deleting created wallet\n')
         await wallet.delete_wallet(wallet_config, wallet_credentials)
 
+        #8.
         print_log('\n8. Creating new secure wallet\n')
         try:
             await wallet.create_wallet(wallet_config, wallet_new_credentials)
@@ -98,8 +98,6 @@ async def create_did_and_write_nym():
             if ex.error_code == ErrorCode.WalletAlreadyExistsError:
                 pass
         
-        
-
         print_log('\n[End of Process]\n')
 
     except IndyError as e:

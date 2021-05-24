@@ -28,25 +28,23 @@ async def get_attrib_transaction():
         print_log('\n1. Open pool ledger and get handle from libindy\n')
         pool_handle = await pool.open_pool_ledger(config_name=pool_name, config=None)
 
-        # 4.
-        print_log('\n4. Get Attrib Transaction in Month & Make "attrib.json" File\n')
+        # 2.
+        print_log('\n2. Get Attrib Transaction in Month & Make "attrib.json" File\n')
         count = 0
 
+        # Export Attrib Tx to json
         with open('attrib.json','w',encoding="utf-8") as make_file:
             data = {}
             data['error'] = "None"
             data['did'] = admin_did
             data['transaction'] = []
-            # json_data = json.dumps(data, ensure_ascii=False, indent="\t")
-            # print_log(json_data)
-            # json_data = json.loads(json_data)
-
+            
+            # 월마다의 말일 설정
             last_day = 30
             if int(att_month) % 2 == 1 or int(att_month) == 8:
                 last_day = 31
 
             for building in range(1, 10):                
-                # for i in range(1, int(att_day) + 1):
                 for i in range(1, last_day+1):
                     if i < 10:
                         raw = user_did + '_' + str(building) + '_' + att_year + att_month + "0" + str(i)
@@ -57,19 +55,13 @@ async def get_attrib_transaction():
                         get_attrib_response = json.loads(await ledger.submit_request(pool_handle, get_attrib_request))
 
                         if get_attrib_response['result']['data'] is not None:
-                            # json_data = json.loads(json_data)
                             count = count + 1
                             
                             print_log("Success")
                             response = json.loads(get_attrib_response['result']['data'])
-                            # res = json.dumps(response, ensure_ascii=False, indent="\t")
-                            # json_data = json_data.copy()
-                            # json_data.update(response)
                             data["transaction"].append(response[raw])
-                            # json_data = json.dumps(json_data,ensure_ascii=False, indent="\t")
 
                         else:
-                            # print_log(raw)
                             pass
 
                     except IndyError as ex:
@@ -79,8 +71,7 @@ async def get_attrib_transaction():
                         else:
                             with open('attrib.json','w',encoding="utf-8") as make_file:
                                 json.dump(json.loads(response), make_file, ensure_ascii=False, indent="\t")
-            # print_log(json_data)
-            # json.dump(json.loads(json_data), make_file, ensure_ascii=False,indent="\t")
+                                
             print_log("Count: " + str(count))
             if count == 0:
                 data['error'] = "Error"

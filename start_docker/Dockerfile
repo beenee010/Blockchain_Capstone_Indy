@@ -20,6 +20,8 @@ RUN apt-get update -y && apt-get install -y \
 RUN pip3 install -U \
         'pip<10.0.0' \
         setuptools
+
+# Adding repositories and keys
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CE7709D068DB5E88
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BD33704C
 
@@ -40,6 +42,7 @@ RUN pip install pytz
 RUN ln -sf /usr/local/lib/python3.6/dist-packages/pytz/zoneinfo/Asia/Seoul /etc/localtime
 RUN pip install --upgrade python3-indy
 
+# Push Setting file
 ADD genesis /home/indy/genesis
 ADD make_pool.txt /home/indy/make_pool.txt
 ADD test.sh /home/indy/start.sh

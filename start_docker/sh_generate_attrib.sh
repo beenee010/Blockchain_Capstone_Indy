@@ -19,8 +19,10 @@ echo "[open wallet]"
 echo "\twallet_name: ${wallet_name}"
 echo "\twallet_key: ${wallet_key}"
 
+# Generate Attrib with params & Export ouput file
 docker exec -iu 0 "$name" python3 /home/indy/generate_attrib.py "${wallet_name}" "${wallet_key}" "${admin_did}" "${user_did}" "${building}" "${year}" "${month}" "${day}"
 
+# Copy output file to docker container
 # docker cp "$name":/home/indy/gen_attrib.json /home/deploy
 docker cp "$name":/home/indy/gen_attrib.json ./
 docker exec -iu 0 "$name" rm gen_attrib.json

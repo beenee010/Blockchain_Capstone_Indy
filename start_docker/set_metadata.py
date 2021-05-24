@@ -58,7 +58,8 @@ async def write_nym_and_query_verkey():
         steward_did, steward_verkey = await did.create_and_store_my_did(wallet_handle, did_json)
         print_log('Steward DID: ', steward_did)
         print_log('Steward Verkey: ', steward_verkey)
-        # did에 metadata 설정
+        
+        # Set Steward DID's metadata
         await did.set_did_metadata(wallet_handle, steward_did, "Steward")
 
         print_log('\n[End of Process]\n')

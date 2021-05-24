@@ -11,7 +11,7 @@ did_db = sys.argv[1]
 # User DID's Seed
 student_seed = sys.argv[2]
 
-# create DID File.
+# Create DID File.
 print('\n4. Parse DID \n')
 did_seed = "0000000000000000STUDENT" + student_seed
 result = {}
@@ -25,6 +25,7 @@ result['dids'].append(_did)
 
 ('\n5. Export DID \n')
 
+# Export DID file
 with open(student_seed+'did.json','w',encoding="utf-8") as make_file:
     json.dump(result, make_file, ensure_ascii=False, indent="\t")
 

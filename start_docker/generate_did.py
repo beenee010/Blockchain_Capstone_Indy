@@ -1,15 +1,3 @@
-"""
-Example demonstrating how to add DID with the role of Trust Anchor to ledger.
-Uses seed to obtain Steward's DID which already exists on the ledger.
-Then it generates new DID/Verkey pair for Trust Anchor.
-Using Steward's DID, NYM transaction request is built to add Trust Anchor's DID and Verkey
-on the ledger with the role of Trust Anchor.
-Once the NYM is successfully written on the ledger, it generates new DID/Verkey pair that represents
-a client, which are used to create GET_NYM request to query the ledger and confirm Trust Anchor's Verkey.
-For the sake of simplicity, a single wallet is used. In the real world scenario, three different wallets
-would be used and DIDs would be exchanged using some channel of communication
-"""
-
 import asyncio
 from collections import OrderedDict
 import json
@@ -43,11 +31,11 @@ async def create_did_and_write_nym():
 
         print_log('genesis_txn: ', genesis_file_path)
 
-        # 2.
+        # 1.
         print_log('\n1. Open pool ledger and get handle from libindy\n')
         pool_handle = await pool.open_pool_ledger(config_name=pool_name, config=None)
        
-        # 3.
+        # 2.
         print_log('\n2. Creating new secure wallet\n')
         try:
             await wallet.create_wallet(wallet_config, wallet_credentials)
@@ -56,21 +44,21 @@ async def create_did_and_write_nym():
             if ex.error_code == ErrorCode.WalletAlreadyExistsError:
                 pass
 
-        # 4.
+        # 3.
         print_log('\n3. Open wallet and get handle from libindy\n')
         wallet_handle = await wallet.open_wallet(wallet_config, wallet_credentials)
 
-        # 5. seed로부터 Steward 설정
+        # 4.
         print_log('\n4. Generating and storing steward DID and verkey\n')
         steward_seed = '000000000000000000000000Steward1'
         did_json = json.dumps({'seed': steward_seed})
         steward_did, steward_verkey = await did.create_and_store_my_did(wallet_handle, did_json)
         print_log('Steward DID: ', steward_did)
         print_log('Steward Verkey: ', steward_verkey)
-        # did에 metadata 설정
+        # Set DID's metadata
         await did.set_did_metadata(wallet_handle, steward_did, "Steward")
 
-        # 6. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
+        # 5.
         print_log('\n5. Generating and storing trust anchor DID and verkey\n')
         did_seed = "0000000000000000STUDENT" + student_seed
         did_seed_json = json.dumps({'seed':did_seed})
@@ -79,7 +67,7 @@ async def create_did_and_write_nym():
         print_log('Trust anchor Verkey: ', trust_anchor_verkey)
         await did.set_did_metadata(wallet_handle, trust_anchor_did, "StudentID")
 
-        # 7. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
+        # 6.
         print_log('\n6. Building NYM request to add Trust Anchor to the ledger\n')
         nym_transaction_request = await ledger.build_nym_request(submitter_did=steward_did,
                                                                  target_did=trust_anchor_did,
@@ -89,7 +77,7 @@ async def create_did_and_write_nym():
         print_log('NYM transaction request: ')
         pprint.pprint(json.loads(nym_transaction_request))
 
-        # 8. 노션 Readme의 'indy-sdk python 스크립트 샘플 코드 원리' 참고
+        # 7.
         print_log('\n7. Sending NYM request to the ledger\n')
         nym_transaction_response = await ledger.sign_and_submit_request(pool_handle=pool_handle,
                                                                         wallet_handle=wallet_handle,
