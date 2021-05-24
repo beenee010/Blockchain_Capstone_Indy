@@ -16,6 +16,7 @@ genesis_file_path = get_pool_genesis_txn_path(pool_name)
 # Params
 wallet_name = sys.argv[1]
 wallet_key = sys.argv[2]
+file_name = str(wallet_name) + '_student_did.json'
 
 wallet_config = json.dumps({"id": wallet_name})
 wallet_credentials = json.dumps({"key": wallet_key})
@@ -33,7 +34,7 @@ async def get_did():
         try:
             await pool.create_pool_ledger_config(config_name=pool_name, config=pool_config)
         except IndyError as ex:
-            add_error("student_did.json")
+            add_error(file_name)
             if ex.error_code == ErrorCode.PoolLedgerConfigAlreadyExistsError:
                 pass
         
@@ -65,20 +66,20 @@ async def get_did():
                 student_DID = jsonObject.get("did")
                 print_log("Student DID: " + student_DID)
                 # Export json of Student DID info
-                with open('student_did.json','w',encoding="utf-8") as make_file:
+                with open(file_name,'w',encoding="utf-8") as make_file:
                     jsonObject['verkey'] = "None"
                     jsonObject['error'] = "None"
                     json.dump(jsonObject, make_file, ensure_ascii=False, indent="\t")
                 break
             else:
-                add_error("student_did.json")
+                add_error(file_name)
         
         print_log('\n[End of Process]\n')
         
         
             
     except IndyError as e:
-        add_error("student_did.json")
+        add_error(file_name)
         print('Error occurred: %s' % e)
 
 

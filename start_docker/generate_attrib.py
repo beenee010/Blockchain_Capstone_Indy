@@ -29,7 +29,7 @@ att_month = sys.argv[7]
 att_day = sys.argv[8]
 
 att_date = att_year+"-"+att_month+"-"+att_day
-
+file_name = wallet_name + "_gen_attrib.json"
 
 wallet_config = json.dumps({"id": wallet_name})
 wallet_credentials = json.dumps({"key": wallet_key})
@@ -82,13 +82,13 @@ async def generate_attrib_transaction():
         json_data['entry_time'] = time
 
         # Export json of Tx info
-        with open('gen_attrib.json','w',encoding="utf-8") as make_file:
+        with open(file_name,'w',encoding="utf-8") as make_file:
             json.dump(json_data, make_file, ensure_ascii=False,indent="\t")
 
         print_log('\n[End of Process]\n')
 
     except IndyError as e:
-        add_error("gen_attrib.json")
+        add_error(file_name)
         print('Error occurred: %s' %e)
 
 

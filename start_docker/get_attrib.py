@@ -15,6 +15,8 @@ user_did = sys.argv[2]
 att_year = sys.argv[3]
 att_month = sys.argv[4]
 
+file_name = user_did + "_attrib.json"
+
 pool_name = 'testpool'
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
 
@@ -33,7 +35,7 @@ async def get_attrib_transaction():
         count = 0
 
         # Export Attrib Tx to json
-        with open('attrib.json','w',encoding="utf-8") as make_file:
+        with open(file_name,'w',encoding="utf-8") as make_file:
             data = {}
             data['error'] = "None"
             data['did'] = admin_did
@@ -69,7 +71,7 @@ async def get_attrib_transaction():
                             print_log(ex.error_code)
                             pass
                         else:
-                            with open('attrib.json','w',encoding="utf-8") as make_file:
+                            with open(file_name,'w',encoding="utf-8") as make_file:
                                 json.dump(json.loads(response), make_file, ensure_ascii=False, indent="\t")
                                 
             print_log("Count: " + str(count))
@@ -83,7 +85,7 @@ async def get_attrib_transaction():
 
     except IndyError as e:
         print('Error occurred: %s' %e)
-        add_error('attrib.json')
+        add_error(file_name)
 
 
 def main():

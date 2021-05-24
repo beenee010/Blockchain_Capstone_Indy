@@ -14,6 +14,8 @@ year="$7"
 month="$8"
 day="$9"
 
+echo "<< Process Start >>\n"
+
 echo "[open wallet]"
 
 echo "\twallet_name: ${wallet_name}"
@@ -24,9 +26,11 @@ docker exec -iu 0 "$name" python3 /home/indy/generate_attrib.py "${wallet_name}"
 
 # Copy output file to docker container
 # docker cp "$name":/home/indy/gen_attrib.json /home/deploy
-docker cp "$name":/home/indy/gen_attrib.json ./
-docker exec -iu 0 "$name" rm gen_attrib.json
+docker cp "$name":/home/indy/"${wallet_name}"_gen_attrib.json ./
+echo "[Log File Copy Docker to Server]"
 
-echo "[Log File Copy]"
+docker exec -iu 0 "$name" rm /home/indy/"${wallet_name}"_gen_attrib.json
 
-echo "<< Process End >>"
+echo "[Log File Remove From 'Docker']"
+
+echo "<< Process End >>\n"

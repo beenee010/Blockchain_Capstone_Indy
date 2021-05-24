@@ -42,7 +42,7 @@ RUN pip install pytz
 RUN ln -sf /usr/local/lib/python3.6/dist-packages/pytz/zoneinfo/Asia/Seoul /etc/localtime
 RUN pip install --upgrade python3-indy
 
-# Push Setting file
+# ADD Setting file
 ADD genesis /home/indy/genesis
 ADD make_pool.txt /home/indy/make_pool.txt
 ADD test.sh /home/indy/start.sh
@@ -60,12 +60,6 @@ ADD export_wallet_id.py /home/indy/export_wallet_id.py
 ADD recreate_wallet.py /home/indy/recreate_wallet.py
 ADD set_metadata.py /home/indy/set_metadata.py
 
-
-# WORKDIR /home/indy/python3-indy-1.16.0
-# CMD ["python3","setup.py","install"]
-
 WORKDIR /home/indy
-
 RUN chmod -R 777 /home/indy/init.sh
-# ENTRYPOINT ["./init.sh"]
 USER indy

@@ -3,10 +3,8 @@ from collections import OrderedDict
 import json
 import pprint
 import sys
-
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
-
 from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
 
 pool_name = 'testpool'
@@ -17,7 +15,7 @@ user_data = OrderedDict()
 # User E-Mail Address
 wallet_name = sys.argv[1]
 wallet_key = sys.argv[2]
-
+file_name = wallet_name + "_gen_did.json"
 # User DID's Seed
 student_seed = sys.argv[3]
 
@@ -40,7 +38,7 @@ async def create_did_and_write_nym():
         try:
             await wallet.create_wallet(wallet_config, wallet_credentials)
         except IndyError as ex:
-            add_error("data.json")
+            add_error(file_name)
             if ex.error_code == ErrorCode.WalletAlreadyExistsError:
                 pass
 
@@ -93,7 +91,7 @@ async def create_did_and_write_nym():
         print_log('\n8. Make User EMail, DID Json File\n')
         print(json.dumps(user_data, ensure_ascii=False, indent="\t"))
 
-        with open('data.json','w',encoding="utf-8") as make_file:
+        with open(file_name,'w',encoding="utf-8") as make_file:
             user_data['error'] = "None"
             json.dump(user_data, make_file, ensure_ascii=False, indent="\t")
         
@@ -101,7 +99,7 @@ async def create_did_and_write_nym():
         print_log('\n[End of Process]\n')
 
     except IndyError as e:
-        add_error("data.json")
+        add_error(file_name)
         print('Error occurred: %s' %e)
 
 
