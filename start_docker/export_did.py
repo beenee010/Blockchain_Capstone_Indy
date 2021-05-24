@@ -11,22 +11,33 @@ did_db = sys.argv[1]
 # User DID's Seed
 student_seed = sys.argv[2]
 
-# Create DID File.
-print('\n4. Parse DID \n')
-did_seed = "0000000000000000STUDENT" + student_seed
-result = {}
-result['version'] = 1
-result['dids'] = []
-_did = {}
-_did['did'] = did_db
-_did['seed'] = did_seed
-# _did['metadata'] = "StudentID"
-result['dids'].append(_did)
+async def export_did():
+    # Create DID File.
+    print('\nParse DID \n')
+    did_seed = "0000000000000000STUDENT" + student_seed
+    result = {}
+    result['version'] = 1
+    result['dids'] = []
+    _did = {}
+    _did['did'] = did_db
+    _did['seed'] = did_seed
+    # _did['metadata'] = "StudentID"
+    result['dids'].append(_did)
 
-('\n5. Export DID \n')
+    ('\nExport DID \n')
 
-# Export DID file
-with open(student_seed+'did.json','w',encoding="utf-8") as make_file:
-    json.dump(result, make_file, ensure_ascii=False, indent="\t")
+    # Export DID file
+    with open(student_seed+'did.json','w',encoding="utf-8") as make_file:
+        json.dump(result, make_file, ensure_ascii=False, indent="\t")
 
-    print('\nExport DID Success!! \n')
+        print('\nExport DID Success!! \n')
+
+
+def main():
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(export_did())
+    loop.close()
+
+
+if __name__ == '__main__':
+    main()
