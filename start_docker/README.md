@@ -35,7 +35,7 @@ main source : recreate_wallet.py, indy-cli(with specific command txt file), set_
 ex) sh sh_generate_did "container id" "wallet name" "wallet key" "student id(seed)"
 ```
 
-# sh_get_did
+## sh_get_did
 
 ```
 Script for get DID
@@ -43,7 +43,7 @@ main source : get_did.py
 ex) sh sh_get_did "container id" "wallet name" "wallet key"
 ```
 
-# sh_import_did
+## sh_import_did
 
 ```
 Script for import DID to new wallet
@@ -51,7 +51,7 @@ main source : import_did.py, indy-cli(with specific command txt file)
 ex) sh sh_import_did "container id" "wallet name" "previous wallet key" "new wallet key" "student id(seed)"
 ```
 
-# sh_regenerate_did
+## sh_regenerate_did
 
 ```
 Script for import previous DID to new wallet
@@ -59,7 +59,7 @@ main source : export_did.py, indy-cli(with specific command txt file), set_metad
 ex) sh sh_regenerate_did "container id" "did" "student id(seed)" "email" "wallet name" "wallet key"
 ```
 
-# sh_generate_attrib
+## sh_generate_attrib
 
 ```
 Script for generate Attrib Tx
@@ -67,7 +67,7 @@ main source : generate_attrib.py
 ex) sh sh_regenerate_did "container id" "wallet name" "wallet key" "admin_did" "user_did" "building number" "year" "month" "day"
 ```
 
-# sh_get_attrib
+## sh_get_attrib
 
 ```
 Script for get Attrib Tx
