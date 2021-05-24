@@ -23,6 +23,8 @@ wallet_new_key = sys.argv[3]
 # User DID's Seed
 student_seed = sys.argv[4]
 
+file_name = wallet_name + "Did.json"
+
 wallet_config = json.dumps({"id": wallet_name})
 wallet_credentials = json.dumps({"key": wallet_key})
 wallet_new_credentials = json.dumps({"key": wallet_new_key})
@@ -76,7 +78,7 @@ async def create_did_and_write_nym():
         print_log('\n5. Export DID \n')
 
         # Export json of DID file
-        with open('did.json','w',encoding="utf-8") as make_file:
+        with open(file_name,'w',encoding="utf-8") as make_file:
             json.dump(result, make_file, ensure_ascii=False, indent="\t")
 
         print_log('\nExport DID Success!! \n')
@@ -101,7 +103,7 @@ async def create_did_and_write_nym():
         print_log('\n[End of Process]\n')
 
     except IndyError as e:
-        add_error("did.json")
+        add_error(file_name)
         print('Error occurred: %s' %e)
 
 

@@ -14,6 +14,8 @@ wallet_name = sys.argv[2]
 # User Student ID
 student_id = sys.argv[3]
 
+file_name = student_id + 'NewWalletID.json'
+
 async def export_wallet_id():
     # Make Json File to docker
     user_data = OrderedDict()
@@ -25,7 +27,7 @@ async def export_wallet_id():
     print(json.dumps(user_data, ensure_ascii=False, indent="\t"))
 
     # Export New Wallet ID
-    with open(student_id+'NewWalletID.json','w',encoding="utf-8") as make_file:
+    with open(file_name,'w',encoding="utf-8") as make_file:
         user_data['error'] = "None"
         json.dump(user_data, make_file, ensure_ascii=False, indent="\t")
 

@@ -4,12 +4,15 @@ import json
 import pprint
 import sys
 import re
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
 
 # Exported DID
 did_db = sys.argv[1]
 
 # User DID's Seed
 student_seed = sys.argv[2]
+
+file_name = student_seed + 'Did.json'
 
 async def export_did():
     # Create DID File.
@@ -27,10 +30,9 @@ async def export_did():
     ('\nExport DID \n')
 
     # Export DID file
-    with open(student_seed+'did.json','w',encoding="utf-8") as make_file:
+    with open(file_name,'w',encoding="utf-8") as make_file:
         json.dump(result, make_file, ensure_ascii=False, indent="\t")
-
-        print('\nExport DID Success!! \n')
+        print_log('\nExport DID Success!!\n')
 
 
 def main():

@@ -28,7 +28,7 @@ docker exec -iu 0 "${name}" python3 /home/indy/recreate_wallet.py "${wallet_name
 # # Write command file for indy-cli
 echo "pool connect testpool" >> "${did_import_command}"
 echo "wallet open ""${wallet_name}" "key=""${new_key}" >> "${did_import_command}"
-echo "did import /home/indy/did.json" >> "${did_import_command}"
+echo "did import /home/indy/${wallet_name}Did.json" >> "${did_import_command}"
 echo "wallet close " >> "${did_import_command}"
 echo "wallet detach" "${wallet_name}" >> "${did_import_command}"
 echo "exit" >> "${did_import_command}"
@@ -43,6 +43,9 @@ docker exec -iu 0 "${name}" indy-cli /home/indy/"${did_import_command}"
 
 # set metadata
 docker exec -iu 0 "${name}" python3 /home/indy/set_metadata.py "${wallet_name}" "${new_key}"
+
+docker exec -iu 0 "${name}" rm ${wallet_name}Did.json
+echo "[Remove log file from 'Docker']"
 
 # remove log file
 rm "${did_import_command}"

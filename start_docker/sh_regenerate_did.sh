@@ -21,7 +21,7 @@ docker exec -iu 0 "${name}" python3 /home/indy/export_did.py "${did}" "${seed}"
 echo "pool connect testpool" >> "${new_wallet_command}"
 echo "wallet create ""${wallet_name}" "key=""${wallet_key}" >> "${new_wallet_command}"
 echo "wallet open ""${wallet_name}" "key=""${wallet_key}" >> "${new_wallet_command}"
-echo "did import /home/indy/""${seed}""did.json" >> "${new_wallet_command}"
+echo "did import /home/indy/${seed}Did.json" >> "${new_wallet_command}"
 echo "wallet close " >> "${new_wallet_command}"
 echo "wallet detach" "${wallet_name}" >> "${new_wallet_command}"
 echo "exit" >> "${new_wallet_command}"
@@ -45,6 +45,7 @@ docker cp "$name":/home/indy/"${seed}"NewWalletID.json /home/deploy
 echo "[Copy log file from Docker to Server]"
 
 docker exec -iu 0 "$name" rm /home/indy/"${seed}"NewWalletID.json
+docker exec -iu 0 "$name" rm /home/indy/"${seed}"Did.json
 echo "[Remove log file from 'Docker']"
 
 echo "<< Process End >>\n"

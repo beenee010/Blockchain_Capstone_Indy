@@ -23,12 +23,14 @@ wallet_new_key = sys.argv[3]
 # User DID's Seed
 student_seed = sys.argv[4]
 
+file_name = wallet_name + "ImportDid.json"
+
 wallet_config = json.dumps({"id": wallet_name})
 wallet_credentials = json.dumps({"key": wallet_key})
 wallet_new_credentials = json.dumps({"key": wallet_new_key})
 
 
-async def create_did_and_write_nym():
+async def import_did():
     try:
         await pool.set_protocol_version(PROTOCOL_VERSION)
 
@@ -72,7 +74,7 @@ async def create_did_and_write_nym():
 
         print_log(did_file)
 
-        with open('did.json','w',encoding="utf-8") as make_file:
+        with open(file_name,'w',encoding="utf-8") as make_file:
             json.dump(json.loads(did_file), make_file, ensure_ascii=False, indent="\t")
 
         print_log('\nExport DID Success!! \n')
@@ -94,18 +96,16 @@ async def create_did_and_write_nym():
             if ex.error_code == ErrorCode.WalletAlreadyExistsError:
                 pass
         
-        
-
         print_log('\n[End of Process]\n')
 
     except IndyError as e:
-        add_error("did.json")
+        add_error(file_name)
         print('Error occurred: %s' %e)
 
 
 def main():
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(create_did_and_write_nym())
+    loop.run_until_complete(import_did())
     loop.close()
 
 
