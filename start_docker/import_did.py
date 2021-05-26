@@ -8,9 +8,9 @@ import re
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
 
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log, POOL_NAME
 
-pool_name = 'testpool'
+pool_name = POOL_NAME
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
 
 user_data = OrderedDict()

@@ -7,10 +7,10 @@ import re
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
 
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log, POOL_NAME
 from collections import OrderedDict
 
-pool_name = 'test_pool'
+pool_name = POOL_NAME
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
 
 # Params
