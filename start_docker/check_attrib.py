@@ -7,7 +7,7 @@ import sys
 import logging
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log, POOL_NAME
 
 admin_did = sys.argv[1]
 input_info_hash = sys.argv[2]
@@ -15,7 +15,7 @@ student_id = sys.argv[3]
 
 file_name = student_id + "_check_attrib.json"
 
-pool_name = 'testpool'
+pool_name = POOL_NAME
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
 
 
