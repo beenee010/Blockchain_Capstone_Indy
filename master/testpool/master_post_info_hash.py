@@ -87,13 +87,9 @@ async def generate_attrib_transaction():
 
 
 def main():
-    answer = input('\033[31m'+'<<<WARNING!!! THIS IS MAINPOOL!!! ARE YOU SURE? [y/N]>>> '+'\033[0m')
-    if answer=='y' or answer=='Y' or answer=='yes':
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(generate_attrib_transaction())
-        loop.close()
-    else:
-        print('<<<PROCESS STOP>>>')
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(generate_attrib_transaction())
+    loop.close()
 
 
 if __name__ == '__main__':
