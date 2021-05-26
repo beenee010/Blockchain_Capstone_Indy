@@ -7,7 +7,7 @@ import sys
 import logging
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log, POOL_NAME
 
 admin_did = sys.argv[1]
 user_did = sys.argv[2]
@@ -17,7 +17,7 @@ att_month = sys.argv[4]
 
 file_name = user_did + "_attrib.json"
 
-pool_name = 'testpool'
+pool_name = POOL_NAME
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
 
 async def get_attrib_transaction():

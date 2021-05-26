@@ -4,7 +4,7 @@ import json
 import pprint
 import sys
 import re
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log, POOL_NAME
 
 # Exported DID
 did_db = sys.argv[1]

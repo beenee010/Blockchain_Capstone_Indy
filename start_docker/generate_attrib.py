@@ -8,12 +8,12 @@ import datetime
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
 
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log, POOL_NAME
 
-pool_name = 'testpool'
+
 
 steward_did = 'Th7MpTaRZVRYnPiabds81Y'
-genesis_file_path = get_pool_genesis_txn_path(pool_name)
+genesis_file_path = get_pool_genesis_txn_path(POOL_NAME)
 
 user_data = OrderedDict()
 
@@ -47,7 +47,7 @@ async def generate_attrib_transaction():
 
         # 1.
         print_log('\n1. Open pool ledger and get handle from libindy\n')
-        pool_handle = await pool.open_pool_ledger(config_name=pool_name, config=None)
+        pool_handle = await pool.open_pool_ledger(config_name=POOL_NAME, config=None)
 
         # 2.
         print_log('\n2. Open wallet and get handle from libindy\n')
