@@ -25,8 +25,8 @@ echo "\twallet_key: ${wallet_key}"
 docker exec -iu 0 "$name" python3 /home/indy/generate_attrib.py "${wallet_name}" "${wallet_key}" "${admin_did}" "${user_did}" "${building}" "${year}" "${month}" "${day}"
 
 # Copy output file to docker container
-# docker cp "$name":/home/indy/gen_attrib.json /home/deploy
-docker cp "$name":/home/indy/"${wallet_name}"_gen_attrib.json ./
+docker cp "$name":/home/indy/gen_attrib.json /home/deploy
+# docker cp "$name":/home/indy/"${wallet_name}"_gen_attrib.json ./
 echo "[Log File Copy Docker to Server]"
 
 docker exec -iu 0 "$name" rm /home/indy/"${wallet_name}"_gen_attrib.json
