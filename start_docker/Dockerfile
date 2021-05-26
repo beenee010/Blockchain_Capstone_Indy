@@ -59,6 +59,7 @@ ADD export_did.py /home/indy/export_did.py
 ADD export_wallet_id.py /home/indy/export_wallet_id.py
 ADD recreate_wallet.py /home/indy/recreate_wallet.py
 ADD set_metadata.py /home/indy/set_metadata.py
+ADD check_attrib.py /home/indy/check_attrib.py
 
 WORKDIR /home/indy
 RUN chmod -R 777 /home/indy/init.sh
