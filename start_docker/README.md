@@ -75,3 +75,9 @@ main source : get_attrib.py
 ex) sh sh_regenerate_did "container id" "admin_did" "user_did" "year" "month"
 ```
 
+## update_docker
+```
+Script for Update Docker (in docker files)
+in sh file: docker_list="docker container IDs" (Tokenize using withe space)
+sh ./update_docker.sh
+```
