@@ -1,4 +1,4 @@
-# Generate info_hash Attrib TX python for Master DID
+## Generate info_hash Attrib TX python for Master DID
 
 ```
 Python code for Generate info_hash Attrib TX of Master DID
@@ -8,3 +8,10 @@ ex) python3 master_post_info_hash.py "wallet name" "wallet key" "master did" "st
 
 - testpool은 코드를 바로 실행 가능
 - mainpool은 실수를 방지하고자 입력창에 y를 넣어야 실행 됨
+
+## Import Master DID
+```
+Script for Import Master DID to new wallet
+main source : sh_import_master_did.py
+ex) sh sh_import_master_did.sh "Master DID" "Master Seed" "new wallet name" "new wallet key"
+```
