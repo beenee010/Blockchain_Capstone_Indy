@@ -18,7 +18,7 @@ echo "<< Process Start >>\n"
 docker exec -iu 0 "${name}" python3 /home/indy/export_did.py "${did}" "${seed}"
 
 # Write command file for indy-cli
-echo "pool connect testpool" >> "${new_wallet_command}"
+echo "pool connect mainpool" >> "${new_wallet_command}"
 echo "wallet create ""${wallet_name}" "key=""${wallet_key}" >> "${new_wallet_command}"
 echo "wallet open ""${wallet_name}" "key=""${wallet_key}" >> "${new_wallet_command}"
 echo "did import /home/indy/${seed}Did.json" >> "${new_wallet_command}"
