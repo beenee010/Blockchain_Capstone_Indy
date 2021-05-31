@@ -3,13 +3,14 @@
 # set -e
 
 did="$1"
-seed="$2"
-wallet_name="$3"
-wallet_key="$4"
+# seed="$2"
+wallet_name="$2"
+wallet_key="$3"
 
 new_wallet_command="${did}_master_wallet_command.txt"
 
-python3 export_master_did.py "${did}" "${seed}"
+python3 export_master_did.py "${did}"
+# python3 export_master_did.py "${did}" "${seed}"
 
 echo "<< Process Start >>\n"
 
@@ -23,7 +24,7 @@ echo "exit" >> "${new_wallet_command}"
 
 
 # Control indy-cli with command file
-indy-cli "${new_wallet_command}"
+./indy-cli "${new_wallet_command}"
 
 # docker exec -iu 0 "$name" rm /home/indy/"${seed}"NewWalletID.json
 rm "${did}"Did.json
