@@ -25,4 +25,4 @@ ex) sh sh_import_master_did.sh "Master DID" "new wallet name" "new wallet key"
 
 ## Example Image of Cold Storage
 
-<img src="./example_coldstorage.jpg">
+<img src="./Example_ColdStorage.jpg">
