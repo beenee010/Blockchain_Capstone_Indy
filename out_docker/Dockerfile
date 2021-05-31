@@ -20,6 +20,8 @@ RUN apt-get update -y && apt-get install -y \
 RUN pip3 install -U \
         'pip<10.0.0' \
         setuptools
+
+# Adding repositories and keys
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CE7709D068DB5E88
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BD33704C
 
@@ -36,22 +38,29 @@ RUN apt-get install -y libvcx
 RUN apt-get install -y indy-cli
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
+RUN pip install pytz
+RUN ln -sf /usr/local/lib/python3.6/dist-packages/pytz/zoneinfo/Asia/Seoul /etc/localtime
 RUN pip install --upgrade python3-indy
 
+# ADD Setting file
 ADD genesis /home/indy/genesis
 ADD make_pool.txt /home/indy/make_pool.txt
-ADD test.sh /home/indy/start.sh
+ADD start.sh /home/indy/start.sh
 ADD init.sh /home/indy/init.sh
-ADD generate_did.py /home/indy/generate_did.py
+
 ADD utils.py /home/indy/utils.py
+
+ADD generate_did.py /home/indy/generate_did.py
+ADD get_did.py /home/indy/get_did.py
+
 ADD generate_attrib.py /home/indy/generate_attrib.py
 ADD get_attrib.py /home/indy/get_attrib.py
-ADD get_did.py /home/indy/get_did.py
-# WORKDIR /home/indy/python3-indy-1.16.0
-# CMD ["python3","setup.py","install"]
+ADD export_did.py /home/indy/export_did.py
+ADD export_wallet_id.py /home/indy/export_wallet_id.py
+ADD recreate_wallet.py /home/indy/recreate_wallet.py
+ADD set_metadata.py /home/indy/set_metadata.py
+ADD check_attrib.py /home/indy/check_attrib.py
 
 WORKDIR /home/indy
-
 RUN chmod -R 777 /home/indy/init.sh
-# ENTRYPOINT ["./init.sh"]
 USER indy

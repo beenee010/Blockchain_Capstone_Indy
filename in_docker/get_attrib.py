@@ -1,34 +1,24 @@
 import asyncio
 from collections import OrderedDict
+import time
 import json
 import pprint
 import sys
+import logging
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError, ErrorCode
-from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION
+from utils import get_pool_genesis_txn_path, PROTOCOL_VERSION, add_error, print_log, POOL_NAME
 
-email = sys.argv[1]
-wallet_name = sys.argv[2]
-wallet_key = sys.argv[3]
-user_did = sys.argv[4]
+admin_did = sys.argv[1]
+user_did = sys.argv[2]
 
-att_building = sys.argv[5]
-att_year = sys.argv[6]
-att_month = sys.argv[7]
-att_day = sys.argv[8]
+att_year = sys.argv[3]
+att_month = sys.argv[4]
 
-pool_name = 'testpool'
-steward_did = 'Th7MpTaRZVRYnPiabds81Y'
+file_name = user_did + "_attrib.json"
+
+pool_name = POOL_NAME
 genesis_file_path = get_pool_genesis_txn_path(pool_name)
-
-wallet_config = json.dumps({"id": wallet_name})
-wallet_credentials = json.dumps({"key": wallet_key})
-
-def print_log(value_color="", value_noncolor=""):
-    """set the colors for text."""
-    HEADER = '\033[92m'
-    ENDC = '\033[0m'
-    print(HEADER + value_color + ENDC + str(value_noncolor))
 
 async def get_attrib_transaction():
     try:
@@ -36,61 +26,66 @@ async def get_attrib_transaction():
 
         print_log('genesis_txn: ', genesis_file_path)
 
-        # 2.
+        # 1.
         print_log('\n1. Open pool ledger and get handle from libindy\n')
         pool_handle = await pool.open_pool_ledger(config_name=pool_name, config=None)
 
-        # 3.
+        # 2.
+        print_log('\n2. Get Attrib Transaction in Month & Make "attrib.json" File\n')
+        count = 0
 
-
-        # 4.
-        print_log('\n3. Open wallet and get handle from libindy\n')
-        wallet_handle = await wallet.open_wallet(wallet_config, wallet_credentials)
-
-        #5.
-        print_log('\n4. Get DID and Verkey From wallet\n')
-        did_result = await did.get_my_did_with_meta(wallet_handle, user_did)
-        print_log('DID_Result ', did_result)
-        
-        # 6.
-        for i in range(1, int(att_day)):
-            try:
-                get_attrib_request = await ledger.build_get_attrib_request(user_did,user_did,'{"'+user_did + '_' + att_building + '_' + att_year + att_month + str(i) + '":{"name":"' + user_did + '"}}', None, None)
-                # get_attrib_response = await ledger.sign_and_submit_request(pool_handle=pool_handle,
-                #                                                         wallet_handle=wallet_handle,
-                #                                                         submitter_did=user_did,
-                #                                                         request_json=get_attrib_request)
-                signed_request = await ledger.sign_request(wallet_handle, user_did, get_attrib_request)
-                response = await ledger.submit_request(pool_handle, signed_request)
-                pprint.pprint(await ledger.get_response_metadata(response))
-            except IndyError as ex:
-                if ex.error_code == ErrorCode.LedgerInvalidTransaction:
-                    print_log(ex.error_code)
-                    pass
-                else:
-                    with open('attrib.json','w',encoding="utf-8") as make_file:
-                        json.dump(json.loads(response), make_file, ensure_ascii=False, indent="\t")
-                        
+        # Export Attrib Tx to json
+        with open(file_name,'w',encoding="utf-8") as make_file:
+            data = {}
+            data['error'] = "None"
+            data['did'] = admin_did
+            data['transaction'] = []
             
+            # 월마다의 말일 설정
+            last_day = 30
+            if int(att_month) % 2 == 1 or int(att_month) == 8:
+                last_day = 31
 
-        # print_log('\n5. Generate Attrib Transaction\n')
-        # attrib_transaction_request = await ledger.build_attrib_request(user_did, user_did,None, '{"'+user_did + '_' + att_building + '_' + att_year + att_month + att_day + '":{"name":"' + user_did + '"}}', None)
-        # # # user_data["date"] = now.YEAR
-        # # print_log('\n5. Make User EMail, DID Json File\n')
-        # # print(json.dumps(user_data, ensure_ascii=False, indent="\t"))
+            for building in range(1, 10):                
+                for i in range(1, last_day+1):
+                    if i < 10:
+                        raw = user_did + '_' + str(building) + '_' + att_year + att_month + "0" + str(i)
+                    else:
+                        raw = user_did + '_' + str(building) + '_' + att_year + att_month + str(i)
+                    try:
+                        get_attrib_request = await ledger.build_get_attrib_request(admin_did,admin_did,raw, None, None)
+                        get_attrib_response = json.loads(await ledger.submit_request(pool_handle, get_attrib_request))
 
-        # # with open('data.json','w',encoding="utf-8") as make_file:
-        # #     json.dump(user_data, make_file, ensure_ascii=False, indent="\t")
-        
-        # ########################
+                        if get_attrib_response['result']['data'] is not None:
+                            count = count + 1
+                            
+                            print_log("Success")
+                            response = json.loads(get_attrib_response['result']['data'])
+                            data["transaction"].append(response[raw])
 
+                        else:
+                            pass
 
-        # print_log(get_attrib_response)
-        ########################
-        print_log('\n6. End of Process\n')
+                    except IndyError as ex:
+                        if ex.error_code == ErrorCode.LedgerInvalidTransaction:
+                            print_log(ex.error_code)
+                            pass
+                        else:
+                            with open(file_name,'w',encoding="utf-8") as make_file:
+                                json.dump(json.loads(response), make_file, ensure_ascii=False, indent="\t")
+                                
+            print_log("Count: " + str(count))
+            if count == 0:
+                data['error'] = "Error"
+                json.dump(data, make_file, ensure_ascii=False,indent="\t")
+            else:
+                json.dump(data, make_file, ensure_ascii=False,indent="\t")
+
+        print_log('\n[End of Process]\n')
 
     except IndyError as e:
         print('Error occurred: %s' %e)
+        add_error(file_name)
 
 
 def main():
@@ -101,3 +96,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
