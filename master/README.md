@@ -22,3 +22,7 @@ Script for Import Master DID to new wallet
 main source : sh_import_master_did.py
 ex) sh sh_import_master_did.sh "Master DID" "new wallet name" "new wallet key"
 ```
+
+## Example Image of Cold Storage
+
+<img src="./example_coldstorage.jpg">
