@@ -45,7 +45,7 @@ RUN pip install --upgrade python3-indy
 # ADD Setting file
 ADD genesis /home/indy/genesis
 ADD make_pool.txt /home/indy/make_pool.txt
-ADD test.sh /home/indy/start.sh
+ADD start.sh /home/indy/start.sh
 ADD init.sh /home/indy/init.sh
 
 ADD utils.py /home/indy/utils.py

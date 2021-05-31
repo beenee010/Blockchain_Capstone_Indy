@@ -13,9 +13,8 @@ echo "<< Process Start >>\n"
 
 for var in $docker_list
 do
-    # docker exec -iu 0 $var rm "$var":/home/indy/*
-    docker cp /home/caps/indy/in_docker/. "$var":/home/indy/
-    # docker cp ../in_docker/. "$var":/home/indy/
+    # docker exec -iu 0 $var rm /home/indy/*
+    docker cp /home/caps/indy/in_docker/ "$var":/home/indy/
     echo "[Python File Copied]"
 done
 # Copy output file to Deploy folder
