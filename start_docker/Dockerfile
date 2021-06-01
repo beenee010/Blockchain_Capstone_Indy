@@ -42,25 +42,30 @@ RUN pip install pytz
 RUN ln -sf /usr/local/lib/python3.6/dist-packages/pytz/zoneinfo/Asia/Seoul /etc/localtime
 RUN pip install --upgrade python3-indy
 
+RUN git init /home/indy/
+WORKDIR /home/indy
+RUN git config core.sparseCheckout true
+RUN echo "in_docker" >> /home/indy/.git/info/sparse-checkout
+
 # ADD Setting file
-ADD genesis /home/indy/genesis
-ADD make_pool.txt /home/indy/make_pool.txt
-ADD start.sh /home/indy/start.sh
-ADD init.sh /home/indy/init.sh
+# ADD genesis /home/indy/genesis
+# ADD make_pool.txt /home/indy/make_pool.txt
+# ADD start.sh /home/indy/start.sh
+# ADD init.sh /home/indy/init.sh
 
-ADD utils.py /home/indy/utils.py
+# ADD utils.py /home/indy/utils.py
 
-ADD generate_did.py /home/indy/generate_did.py
-ADD get_did.py /home/indy/get_did.py
+# ADD generate_did.py /home/indy/generate_did.py
+# ADD get_did.py /home/indy/get_did.py
 
-ADD generate_attrib.py /home/indy/generate_attrib.py
-ADD get_attrib.py /home/indy/get_attrib.py
-ADD export_did.py /home/indy/export_did.py
-ADD export_wallet_id.py /home/indy/export_wallet_id.py
-ADD recreate_wallet.py /home/indy/recreate_wallet.py
-ADD set_metadata.py /home/indy/set_metadata.py
-ADD check_attrib.py /home/indy/check_attrib.py
+# ADD generate_attrib.py /home/indy/generate_attrib.py
+# ADD get_attrib.py /home/indy/get_attrib.py
+# ADD export_did.py /home/indy/export_did.py
+# ADD export_wallet_id.py /home/indy/export_wallet_id.py
+# ADD recreate_wallet.py /home/indy/recreate_wallet.py
+# ADD set_metadata.py /home/indy/set_metadata.py
+# ADD check_attrib.py /home/indy/check_attrib.py
 
 WORKDIR /home/indy
-RUN chmod -R 777 /home/indy/init.sh
+# RUN chmod -R 777 /home/indy/init.sh
 USER indy

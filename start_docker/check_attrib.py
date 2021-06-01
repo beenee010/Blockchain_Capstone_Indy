@@ -61,7 +61,7 @@ async def get_attrib_transaction():
                     pass
                 else:
                     with open(file_name,'w',encoding="utf-8") as make_file:
-                        json.dump(json.loads(response), make_file, ensure_ascii=False, indent="\t")
+                        json.dump(json.loads(get_attrib_response), make_file, ensure_ascii=False, indent="\t")
                                 
             print_log("Count: " + str(count))
             if count == 0:
